@@ -5,8 +5,8 @@ runtime bundle/tplugin_vim/macros/tplugin.vim
 " Set syntax highlighting options.
 set t_Co=256
 set background=dark
-syntax on
-colorscheme molokai
+syntax enable
+colorscheme badwolf
 set guifont=Menlo:h12
 " Enabled later, after Pathogen
 filetype off
@@ -73,7 +73,7 @@ set showtabline=2 " Always show tab bar.
 set sidescrolloff=3 " Start scrolling three columns before vertical border of window.
 set smartcase " Ignore 'ignorecase' if search patter contains uppercase characters.
 set smarttab " At start of line, <Tab> inserts shiftwidth spaces, <Bs> deletes shiftwidth spaces.
-set softtabstop=2 " Tab key results in 2 spaces
+set softtabstop=4 " Tab key results in 4 spaces
 set splitbelow " New window goes below
 set splitright " New windows goes right
 set suffixes=.bak,~,.swp,.swo,.o,.d,.info,.aux,.log,.dvi,.pdf,.bin,.bbl,.blg,.brf,.cb,.dmg,.exe,.ind,.idx,.ilg,.inx,.out,.toc,.pyc,.pyd,.dll
@@ -133,6 +133,7 @@ set lcs=tab:›\ ,trail:·,eol:¬,nbsp:_
 set fcs=fold:-
 nnoremap <silent> <leader>c :set nolist!<CR>
 
+
 " Clear last search (,qs)
 map <silent> <leader>qs <Esc>:noh<CR>
 " map <silent> <leader>qs <Esc>:let @/ = ""<CR>
@@ -158,6 +159,26 @@ endif
 " Indent/unident block (,]) (,[)
 nnoremap <leader>] >i{<CR>
 nnoremap <leader>[ <i{<CR>
+
+" Insert semicolon at the end of line
+nnoremap ;; A;<Esc>
+
+" Autocomplete brackets, braces and parens
+
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+
+inoremap [      []<Left>
+inoremap [<CR>  [<CR>]<Esc>O
+inoremap [[     [
+inoremap []     []
+
+inoremap        (  ()<Left>
+inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+
+
 
 " Paste toggle (,p)
 set pastetoggle=<leader>p
@@ -225,7 +246,6 @@ autocmd BufReadPost *
 " Emulate bundles, allow plugins to live independantly. Easier to manage.
 call pathogen#runtime_append_all_bundles()
 filetype plugin indent on
-
 " JSON
 au BufRead,BufNewFile *.json set ft=json syntax=javascript
 
@@ -258,3 +278,20 @@ let g:vimclojure#FuzzyIndent = 1 " Names beginning in 'def' or 'with' to be inde
 
 " Rainbow Parenthesis
 nnoremap <leader>rp :RainbowParenthesesToggle<CR>
+
+" Disable keyboard arrows in all modes
+
+no <down> <Nop>
+no <left> <Nop>
+no <right> <Nop>
+no <up> <Nop>
+
+ino <down> <Nop>
+ino <left> <Nop>
+ino <right> <Nop>
+ino <up> <Nop>
+
+vno <down> <Nop>
+vno <left> <Nop>
+vno <right> <Nop>
+vno <up> <Nop>
